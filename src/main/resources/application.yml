@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/LIBRARY
+    username: postgres
+    password: 1498
+server:
+  tomcat:
+    relaxed-query-chars: '|,{,},[,],^'
+  servlet:
+    context-path: /library

@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  app:
+    image: 'library:latest'
+    build:
+      context: .
+    container_name: library
+    port:
+      - 9090:8080
