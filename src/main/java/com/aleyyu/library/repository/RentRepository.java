@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RentRepository extends JpaRepository<Rent, Integer> {
+
+    Rent findById(int id);
+
+    Rent findByBookId(int id);
 }

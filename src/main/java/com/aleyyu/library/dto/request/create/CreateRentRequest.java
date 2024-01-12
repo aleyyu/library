@@ -21,6 +21,6 @@ public class CreateRentRequest {
     @NotNull
     private int bookId;
 
-    private String status;
     private LocalDate checkoutDate;
+
 }

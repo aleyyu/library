@@ -28,6 +28,24 @@ public class CustomersController {
         return ResponseEntity.ok(customerResponseList);
     }
 
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<DataResult<CustomerResponse>> getCustomerById(@PathVariable("id") int id){
+        DataResult<CustomerResponse> response = customerService.getCustomerById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getByBookId/{id}")
+    public ResponseEntity<DataResult<CustomerResponse>> getCustomerByBookId(@PathVariable("id") int id){
+        DataResult<CustomerResponse> response = customerService.getCustomerByBookId(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getWithNoBook")
+    public ResponseEntity<DataResult<List<CustomerResponse>>> getCustomerWhoHadNoBook(){
+        DataResult<List<CustomerResponse>> responseList = customerService.getCustomerWhoHadNoBook();
+        return ResponseEntity.ok(responseList);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Result> add(@RequestBody @Valid CreateCustomerRequest request){
         return ResponseEntity.ok(customerService.add(request));

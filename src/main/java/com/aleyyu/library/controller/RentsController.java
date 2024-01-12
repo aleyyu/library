@@ -1,16 +1,15 @@
 package com.aleyyu.library.controller;
 
 import com.aleyyu.library.dto.request.create.CreateRentRequest;
+import com.aleyyu.library.dto.request.update.UpdateRentRequest;
 import com.aleyyu.library.dto.response.RentResponse;
 import com.aleyyu.library.service.RentService;
 import com.aleyyu.library.util.result.DataResult;
 import com.aleyyu.library.util.result.Result;
 import com.aleyyu.library.util.result.SuccessDataResult;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +30,22 @@ public class RentsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Result> add(CreateRentRequest request){
+    public ResponseEntity<Result> add(@RequestBody @Valid CreateRentRequest request){
         return ResponseEntity.ok(rentService.add(request));
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<Result> update(UpdateRentRequest request){
+        return ResponseEntity.ok(rentService.update(request));
+    }
+
+    @PostMapping("/endRent/{id}")
+    public ResponseEntity<Result> endRent(@PathVariable("id") int id){
+        return ResponseEntity.ok(rentService.endRent(id));
+    }
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Result> deleteRent(@PathVariable("id") int id){
+        return ResponseEntity.ok(rentService.delete(id));
     }
 }

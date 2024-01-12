@@ -24,13 +24,12 @@ public class Customer {
     private String lastName;
 
     @Column(name = "LIBRARY_NO")
-    private String libaryNo;
+    private String libraryNo;
 
     @Column(name = "ADDRESS")
     private String address;
 
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
-
 
 }

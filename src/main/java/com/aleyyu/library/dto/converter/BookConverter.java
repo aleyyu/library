@@ -34,4 +34,12 @@ public class BookConverter {
         book.setAuthor(author);
         return book;
     }
+
+    public Book convertToBook(BookResponse response){
+        Book book = new Book();
+        book.setName(response.getName());
+        book.setIsbn(response.getIsbn());
+
+        return book;
+    }
 }

@@ -14,7 +14,7 @@ public class CustomerConverter {
         customerResponse.setName(customer.getName());
         customerResponse.setLastName(customer.getLastName());
         customerResponse.setAddress(customer.getAddress());
-        customerResponse.setLibraryNo(customer.getLibaryNo());
+        customerResponse.setLibraryNo(customer.getLibraryNo());
         customerResponse.setPhoneNumber(customer.getPhoneNumber());
         return customerResponse;
     }
@@ -23,9 +23,19 @@ public class CustomerConverter {
         Customer customer = new Customer();
         customer.setName(request.getName());
         customer.setLastName(request.getLastName());
-        customer.setLibaryNo(request.getLibraryNo());
+        customer.setLibraryNo(request.getLibraryNo());
         customer.setPhoneNumber(request.getPhoneNumber());
         customer.setAddress(request.getAddress());
+        return customer;
+    }
+
+    public Customer convertToCustomer(CustomerResponse response){
+        Customer customer = new Customer();
+        customer.setName(response.getName());
+        customer.setId(response.getId());
+        customer.setLibraryNo(response.getLibraryNo());
+        customer.setAddress(response.getAddress());
+        customer.setPhoneNumber(response.getPhoneNumber());
         return customer;
     }
 }
