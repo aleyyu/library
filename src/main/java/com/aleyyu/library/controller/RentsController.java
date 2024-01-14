@@ -29,6 +29,12 @@ public class RentsController {
         return ResponseEntity.ok(rentResponseList);
     }
 
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<DataResult<RentResponse>> getRentById(@PathVariable("id") int id){
+        DataResult<RentResponse> rentResponse = rentService.getRentById(id);
+        return ResponseEntity.ok(rentResponse);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Result> add(@RequestBody @Valid CreateRentRequest request){
         return ResponseEntity.ok(rentService.add(request));

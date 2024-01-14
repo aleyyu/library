@@ -22,11 +22,14 @@ import com.aleyyu.library.util.result.SuccessDataResult;
 import com.aleyyu.library.util.result.SuccessResult;
 import com.aleyyu.library.util.type.BookStatusType;
 import com.aleyyu.library.util.type.RentStatusType;
+import com.aleyyu.library.util.validation.RentValidation;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,11 +37,15 @@ public class RentService {
 
     private final RentRepository rentRepository;
     private final ModelMapperService modelMapperService;
+    private final BookService bookService;
+    private final RentValidation rentValidation;
 
     public RentService(RentRepository rentRepository,
-                       ModelMapperService modelMapperService) {
+                       ModelMapperService modelMapperService, BookService bookService, RentValidation rentValidation) {
         this.rentRepository = rentRepository;
         this.modelMapperService = modelMapperService;
+        this.bookService = bookService;
+        this.rentValidation = rentValidation;
     }
 
     public DataResult<List<RentResponse>> getAll(){
@@ -51,12 +58,15 @@ public class RentService {
     }
 
     public DataResult<RentResponse> getRentById(int id){
-        RentResponse response = modelMapperService.forResponse().map(rentRepository.findById(id), RentResponse.class);
+        Rent rent = rentRepository.findById(id);
+        rentValidation.validateRent(rent);
+        RentResponse response = modelMapperService.forResponse().map(rent, RentResponse.class);
         return new SuccessDataResult<>(response);
     }
 
     public DataResult<RentResponse> getRentByBookId(int id){
         Rent rent = rentRepository.findByBookId(id);
+        rentValidation.validateRent(rent);
         return new SuccessDataResult<>(modelMapperService.forResponse().map(rent, RentResponse.class));
     }
 
@@ -70,19 +80,31 @@ public class RentService {
     }
 
     public Result update(UpdateRentRequest request){
+        rentValidation.validateRent(request);
         rentRepository.save(modelMapperService.forRequest().map(request, Rent.class));
         return new SuccessResult("RENT.UPDATED");
     }
 
     public Result endRent(int id){
         Rent endedRent = rentRepository.findById(id);
-        endedRent.setStatus(RentStatusType.NOT_RETURNED.getCode());
+        rentValidation.validateRent(endedRent);
+        Book returnedBook = getBookByRent(endedRent.getBook().getId());
+        returnedBook.setStatus(BookStatusType.AVAILABLE.getCode());
+        endedRent.setStatus(RentStatusType.RETURNED.getCode());
+        endedRent.setReturnDate(LocalDate.now());
         rentRepository.save(endedRent);
         return new SuccessResult("RENT.ENDED");
     }
 
     public Result delete(int id){
-        rentRepository.delete(rentRepository.findById(id));
+        Rent rent = rentRepository.findById(id);
+        rentValidation.validateRent(rent);
+        rentRepository.delete(rent);
         return new SuccessResult("RENT.DELETED");
+    }
+
+    private Book getBookByRent(int bookId){
+        Book book = modelMapperService.forResponse().map(bookService.getBookById(bookId), Book.class);
+        return book;
     }
 }

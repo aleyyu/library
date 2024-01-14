@@ -44,6 +44,19 @@ public class BooksController {
         return ResponseEntity.ok(bookService.getAvailableBook());
     }
 
+    @GetMapping("/getBooksCustomerRead/{customerId}")
+    public ResponseEntity<DataResult<List<BookResponse>>> getBooksCustomerEverRead(@PathVariable("customerId") int customerId){
+        return ResponseEntity.ok(bookService.getBooksCustomerEverRead(customerId));
+    }
+
+    @GetMapping("/getBooksBetweenDates/{customerId}/{dateStart}/{dateEnd}")
+    public ResponseEntity<DataResult<List<BookResponse>>> getBooksBetweenDates(@PathVariable("customerId") int customerId,
+                                                                 @PathVariable("dateStart") String dateStart,
+                                                                 @PathVariable("dateEnd") String dateEnd){
+        DataResult<List<BookResponse>> responseList = bookService.getBooksReadByCustomerBetweenDates(customerId, dateStart, dateEnd);
+        return ResponseEntity.ok(responseList);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Result> add(CreateBookRequest request){
         return ResponseEntity.ok(bookService.add(request));

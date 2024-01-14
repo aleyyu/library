@@ -62,6 +62,12 @@ public class CustomerService {
         return new SuccessDataResult<>(responseList);
     }
 
+    public DataResult<CustomerResponse> getCustomerWithMostBook(){
+        Customer customer = customerRepository.findWhoHasMostBook();
+        CustomerResponse response = modelMapperService.forResponse().map(customer, CustomerResponse.class);
+        return new SuccessDataResult<>(response);
+    }
+
     public Result add(CreateCustomerRequest customerRequest){
         validation.validateCustomer(customerRequest);
         Customer customer = new Customer();

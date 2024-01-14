@@ -46,6 +46,12 @@ public class CustomersController {
         return ResponseEntity.ok(responseList);
     }
 
+    @GetMapping("/getWithMostBook")
+    public ResponseEntity<DataResult<CustomerResponse>> getCustomerWithMostBook(){
+        DataResult<CustomerResponse> response = customerService.getCustomerWithMostBook();
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Result> add(@RequestBody @Valid CreateCustomerRequest request){
         return ResponseEntity.ok(customerService.add(request));
